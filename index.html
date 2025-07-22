@@ -3,15 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bursemites - Добро пожаловать!</title>
+    <title>Bursemites - В разработке</title>
     
     <!-- Подключаем шрифты с Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap" rel="stylesheet">
+    <!-- Manrope для основного текста (отличная поддержка кириллицы) -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600&display=swap" rel="stylesheet">
+    <!-- Poppins для кнопок -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS Стили */
+        /* === ОБЩИЕ СТИЛИ === */
         html, body {
             margin: 0;
             padding: 0;
@@ -20,61 +23,181 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #003399; /* Фирменный цвет фона */
-            font-family: 'Manrope', sans-serif;
-            color: white;
+            background-color: #003399;
+            font-family: 'Poppins', sans-serif; 
             overflow: hidden;
         }
 
-        .welcome-container {
+        .construction-container {
             text-align: center;
-            padding: 30px;
+            color: white;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .logo-img {
-            max-width: 220px; /* Оптимальный размер для приветственной страницы */
+        .logo-container {
             margin-bottom: 40px;
         }
-
-        h1 {
-            font-size: 2.8rem; /* Крупный и заметный заголовок */
-            font-weight: 800; /* Самый жирный вариант шрифта */
-            margin: 0 0 15px 0;
-            line-height: 1.2;
-        }
-
-        p {
-            font-size: 1.25rem;
-            font-weight: 600;
-            opacity: 0.85; /* Легкая прозрачность для баланса */
-            margin: 0;
+        
+        .logo-img {
+            max-width: 250px;
+            height: auto;
+            transition: max-width 0.3s ease;
         }
         
-        /* Адаптация под мобильные устройства */
-         @media (max-width: 600px) {
-            .logo-img {
-                max-width: 180px;
+        .message-box {
+            min-height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-box h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(1.6rem, 5vw, 2.6rem);
+            font-weight: 600;
+            opacity: 0;
+            animation: fadeInOut 1.5s ease-in-out forwards;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            50% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-out {
+            animation: fadeOut 0.5s ease-in-out forwards;
+        }
+        
+        @keyframes fadeOut {
+             0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+
+        .language-switcher {
+            margin-top: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .language-switcher button {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 12px 25px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher button:hover, .language-switcher button.active {
+            background-color: white;
+            color: #003399;
+        }
+
+        /* === СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ === */
+        @media (max-width: 600px) {
+            .logo-container {
                 margin-bottom: 30px;
             }
-            h1 {
-                font-size: 2.2rem;
+
+            .logo-img {
+                max-width: 200px;
             }
-            p {
-                font-size: 1.1rem;
+
+            .message-box {
+                min-height: 90px;
             }
-         }
+
+            .language-switcher {
+                margin-top: 30px;
+                gap: 8px;
+            }
+
+            .language-switcher button {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="welcome-container">
-        <!-- Логотип компании -->
-        <img src="https://i.postimg.cc/MZQsbd1h/Group.png" alt="Логотип Bursemites" class="logo-img">
+    <div class="construction-container">
         
-        <!-- Приветственное сообщение -->
-        <h1>Добро пожаловать!</h1>
-        <p>Биржа Bursemites находится в активной разработке.</p>
+        <div class="logo-container">
+            <!-- ========== ВСТАВЬТЕ ССЫЛКУ НА ВАШ ЛОГОТИП СЮДА ========== -->
+            <img src="URL_ВАШЕГО_ЛОГОТИПА_ЗДЕСЬ" alt="Логотип Bursemites" class="logo-img">
+        </div>
+        
+        <div class="message-box">
+            <h1 id="animated-text"></h1>
+        </div>
+        
+        <div class="language-switcher" id="lang-switcher">
+            <button data-lang="en">English</button>
+            <button data-lang="ru" class="active">Русский</button>
+            <button data-lang="fr">Français</button>
+            <button data-lang="de">Deutsch</button>
+        </div>
+
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const messages = {
+                en: "The auction exchange is currently under development and is not yet available.",
+                ru: "Биржа в данный момент находится в разработке и пока недоступна.",
+                fr: "La bourse d'enchères est actuellement en développement et n'est pas encore disponible.",
+                de: "Die Auktionsbörse befindet sich in der Entwicklung und ist noch nicht verfügbar."
+            };
+
+            const animatedText = document.getElementById('animated-text');
+            const langButtons = document.querySelectorAll('#lang-switcher button');
+            let currentLang = 'ru';
+
+            function updateText(lang) {
+                animatedText.classList.add('fade-out');
+                setTimeout(() => {
+                    animatedText.textContent = messages[lang];
+                    animatedText.classList.remove('fade-out');
+                    animatedText.style.animation = 'none';
+                    void animatedText.offsetWidth; // Трюк для перезапуска анимации
+                    animatedText.style.animation = null;
+                }, 500);
+            }
+            
+            function setActiveButton(lang) {
+                langButtons.forEach(button => {
+                    button.classList.toggle('active', button.dataset.lang === lang);
+                });
+            }
+
+            langButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const lang = button.dataset.lang;
+                    if (lang !== currentLang) {
+                         currentLang = lang;
+                         updateText(currentLang);
+                         setActiveButton(currentLang);
+                    }
+                });
+            });
+
+            // Инициализация при загрузке
+            updateText(currentLang);
+            setActiveButton(currentLang);
+        });
+    </script>
 
 </body>
 </html>
