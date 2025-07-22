@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bursemites - В разработке</title>
+    
+    <!-- Подключаем шрифты с Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Шрифт для основного текста (с поддержкой кириллицы) -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600&display=swap" rel="stylesheet">
+    <!-- Шрифт для кнопок и интерфейса -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -19,7 +24,8 @@
             justify-content: center;
             align-items: center;
             background-color: #003399; /* Заданный цвет фона */
-            font-family: 'Poppins', sans-serif; /* Заданный шрифт */
+            /* Шрифт по умолчанию для элементов, где он не переопределен */
+            font-family: 'Poppins', sans-serif; 
             overflow: hidden;
         }
 
@@ -35,56 +41,42 @@
             margin-bottom: 40px;
         }
         
-        /* Стили для вашего логотипа */
         .logo-img {
-            max-width: 250px; /* Максимальная ширина логотипа */
-            height: auto;     /* Высота подстроится автоматически для сохранения пропорций */
+            max-width: 250px;
+            height: auto;
         }
         
         .message-box {
-            min-height: 100px; /* Резервируем место под текст */
+            min-height: 110px; /* Немного увеличим для стабильности */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .message-box h1 {
-            font-size: clamp(1.5rem, 5vw, 2.5rem); /* Адаптивный размер шрифта */
+            /* ========== НОВЫЙ ШРИФТ ДЛЯ ОСНОВНОГО ТЕКСТА ========== */
+            font-family: 'Manrope', sans-serif;
+            /* ======================================================= */
+            
+            font-size: clamp(1.6rem, 5vw, 2.6rem); /* Слегка увеличим для нового шрифта */
             font-weight: 600;
-            opacity: 0; /* Начальная прозрачность для анимации */
+            opacity: 0;
             animation: fadeInOut 1.5s ease-in-out forwards;
         }
         
-        /* Анимация появления и исчезновения */
         @keyframes fadeInOut {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            50% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            0% { opacity: 0; transform: translateY(20px); }
+            50% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         
-        /* Класс для анимации исчезновения */
         .fade-out {
             animation: fadeOut 0.5s ease-in-out forwards;
         }
         
         @keyframes fadeOut {
-             0% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
+             0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
         }
 
         .language-switcher {
@@ -101,7 +93,7 @@
             color: white;
             padding: 12px 25px;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', sans-serif; /* Оставляем Poppins для кнопок */
             font-size: 16px;
             border-radius: 8px;
             transition: background-color 0.3s, color 0.3s;
@@ -117,11 +109,10 @@
 
     <div class="construction-container">
         
-        <!-- ========== МЕСТО ДЛЯ ЛОГОТИПА ========== -->
         <div class="logo-container">
-            <img src="URL_ВАШЕГО_ЛОГОТИПА_ЗДЕСЬ" alt="Логотип Bursemites" class="logo-img">
+            <!-- Просто замените URL_ВАШЕГО_ЛОГОТИПА_ЗДЕСЬ на ссылку на ваш логотип -->
+            <img src="https://postimg.cc/dDJmJRHB" alt="Логотип Bursemites" class="logo-img">
         </div>
-        <!-- ======================================= -->
         
         <div class="message-box">
             <h1 id="animated-text"></h1>
@@ -137,7 +128,7 @@
     </div>
 
     <script>
-        // JavaScript логика
+        // JavaScript логика (остается без изменений)
         document.addEventListener('DOMContentLoaded', () => {
             const messages = {
                 en: "The auction exchange is currently under development and is not yet available.",
@@ -148,18 +139,17 @@
 
             const animatedText = document.getElementById('animated-text');
             const langButtons = document.querySelectorAll('#lang-switcher button');
-            let currentLang = 'ru'; // Начальный язык
+            let currentLang = 'ru';
 
             function updateText(lang) {
                 animatedText.classList.add('fade-out');
-
                 setTimeout(() => {
                     animatedText.textContent = messages[lang];
                     animatedText.classList.remove('fade-out');
                     animatedText.style.animation = 'none';
-                    void animatedText.offsetWidth; // Трюк для перезапуска CSS анимации
+                    void animatedText.offsetWidth;
                     animatedText.style.animation = null;
-                }, 500); // Должно совпадать с длительностью анимации fadeOut
+                }, 500);
             }
             
             function setActiveButton(lang) {
@@ -179,7 +169,6 @@
                 });
             });
 
-            // Установка начального текста и активной кнопки
             updateText(currentLang);
             setActiveButton(currentLang);
         });
