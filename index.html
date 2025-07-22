@@ -24,7 +24,6 @@
             justify-content: center;
             align-items: center;
             background-color: #003399; /* Заданный цвет фона */
-            /* Шрифт по умолчанию для элементов, где он не переопределен */
             font-family: 'Poppins', sans-serif; 
             overflow: hidden;
         }
@@ -42,34 +41,33 @@
         }
         
         .logo-img {
-            max-width: 250px;
-            height: auto;
+            max-width: 250px; /* Максимальная ширина логотипа */
+            height: auto;     /* Автоматическая высота для сохранения пропорций */
         }
         
         .message-box {
-            min-height: 110px; /* Немного увеличим для стабильности */
+            min-height: 110px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .message-box h1 {
-            /* ========== НОВЫЙ ШРИФТ ДЛЯ ОСНОВНОГО ТЕКСТА ========== */
-            font-family: 'Manrope', sans-serif;
-            /* ======================================================= */
-            
-            font-size: clamp(1.6rem, 5vw, 2.6rem); /* Слегка увеличим для нового шрифта */
+            font-family: 'Manrope', sans-serif; /* Шрифт с поддержкой кириллицы */
+            font-size: clamp(1.6rem, 5vw, 2.6rem);
             font-weight: 600;
             opacity: 0;
             animation: fadeInOut 1.5s ease-in-out forwards;
         }
         
+        /* Анимация появления */
         @keyframes fadeInOut {
             0% { opacity: 0; transform: translateY(20px); }
             50% { opacity: 1; transform: translateY(0); }
             100% { opacity: 1; transform: translateY(0); }
         }
         
+        /* Анимация исчезновения при смене языка */
         .fade-out {
             animation: fadeOut 0.5s ease-in-out forwards;
         }
@@ -93,7 +91,7 @@
             color: white;
             padding: 12px 25px;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif; /* Оставляем Poppins для кнопок */
+            font-family: 'Poppins', sans-serif; /* Шрифт для кнопок */
             font-size: 16px;
             border-radius: 8px;
             transition: background-color 0.3s, color 0.3s;
@@ -110,8 +108,8 @@
     <div class="construction-container">
         
         <div class="logo-container">
-            <!-- Просто замените URL_ВАШЕГО_ЛОГОТИПА_ЗДЕСЬ на ссылку на ваш логотип -->
-            <img src="https://static.vecteezy.com/system/resources/previews/000/087/511/large_2x/golden-ratio-blue-print-vector.jpg" alt="Логотип Bursemites" class="logo-img">
+            <!-- ВАШ ЛОГОТИП УЖЕ ВСТРОЕН -->
+            <img src="https://i.postimg.cc/MZQsbd1h/Group.png" alt="Логотип Bursemites" class="logo-img">
         </div>
         
         <div class="message-box">
@@ -128,7 +126,7 @@
     </div>
 
     <script>
-        // JavaScript логика (остается без изменений)
+        // JavaScript логика
         document.addEventListener('DOMContentLoaded', () => {
             const messages = {
                 en: "The auction exchange is currently under development and is not yet available.",
@@ -139,7 +137,7 @@
 
             const animatedText = document.getElementById('animated-text');
             const langButtons = document.querySelectorAll('#lang-switcher button');
-            let currentLang = 'ru';
+            let currentLang = 'ru'; // Начальный язык
 
             function updateText(lang) {
                 animatedText.classList.add('fade-out');
@@ -147,9 +145,9 @@
                     animatedText.textContent = messages[lang];
                     animatedText.classList.remove('fade-out');
                     animatedText.style.animation = 'none';
-                    void animatedText.offsetWidth;
+                    void animatedText.offsetWidth; // Трюк для перезапуска CSS анимации
                     animatedText.style.animation = null;
-                }, 500);
+                }, 500); // Задержка равна длительности анимации fadeOut
             }
             
             function setActiveButton(lang) {
@@ -169,6 +167,7 @@
                 });
             });
 
+            // Установка начального состояния при загрузке страницы
             updateText(currentLang);
             setActiveButton(currentLang);
         });
