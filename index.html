@@ -8,13 +8,11 @@
     <!-- Подключаем шрифты с Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Шрифт для основного текста (с поддержкой кириллицы) -->
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600&display=swap" rel="stylesheet">
-    <!-- Шрифт для кнопок и интерфейса -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     
     <style>
-        /* CSS Стили */
+        /* === ОБЩИЕ СТИЛИ === */
         html, body {
             margin: 0;
             padding: 0;
@@ -23,7 +21,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #003399; /* Заданный цвет фона */
+            background-color: #003399;
             font-family: 'Poppins', sans-serif; 
             overflow: hidden;
         }
@@ -34,6 +32,9 @@
             padding: 20px;
             max-width: 800px;
             margin: 0 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .logo-container {
@@ -41,8 +42,9 @@
         }
         
         .logo-img {
-            max-width: 250px; /* Максимальная ширина логотипа */
-            height: auto;     /* Автоматическая высота для сохранения пропорций */
+            max-width: 250px;
+            height: auto;
+            transition: max-width 0.3s ease; /* Плавный переход для размера */
         }
         
         .message-box {
@@ -53,21 +55,19 @@
         }
 
         .message-box h1 {
-            font-family: 'Manrope', sans-serif; /* Шрифт с поддержкой кириллицы */
+            font-family: 'Manrope', sans-serif;
             font-size: clamp(1.6rem, 5vw, 2.6rem);
             font-weight: 600;
             opacity: 0;
             animation: fadeInOut 1.5s ease-in-out forwards;
         }
         
-        /* Анимация появления */
         @keyframes fadeInOut {
             0% { opacity: 0; transform: translateY(20px); }
             50% { opacity: 1; transform: translateY(0); }
             100% { opacity: 1; transform: translateY(0); }
         }
         
-        /* Анимация исчезновения при смене языка */
         .fade-out {
             animation: fadeOut 0.5s ease-in-out forwards;
         }
@@ -91,15 +91,40 @@
             color: white;
             padding: 12px 25px;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif; /* Шрифт для кнопок */
+            font-family: 'Poppins', sans-serif;
             font-size: 16px;
             border-radius: 8px;
-            transition: background-color 0.3s, color 0.3s;
+            transition: all 0.3s ease;
         }
 
         .language-switcher button:hover, .language-switcher button.active {
             background-color: white;
             color: #003399;
+        }
+
+        /* === СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ === */
+        @media (max-width: 600px) {
+            .logo-container {
+                margin-bottom: 30px; /* Уменьшаем отступ снизу */
+            }
+
+            .logo-img {
+                max-width: 200px; /* Уменьшаем логотип */
+            }
+
+            .message-box {
+                min-height: 90px; /* Уменьшаем минимальную высоту блока с текстом */
+            }
+
+            .language-switcher {
+                margin-top: 30px; /* Уменьшаем отступ сверху */
+                gap: 8px;
+            }
+
+            .language-switcher button {
+                padding: 10px 20px; /* Уменьшаем кнопки */
+                font-size: 15px;
+            }
         }
     </style>
 </head>
@@ -108,7 +133,6 @@
     <div class="construction-container">
         
         <div class="logo-container">
-            <!-- ВАШ ЛОГОТИП УЖЕ ВСТРОЕН -->
             <img src="https://i.postimg.cc/MZQsbd1h/Group.png" alt="Логотип Bursemites" class="logo-img">
         </div>
         
@@ -126,7 +150,7 @@
     </div>
 
     <script>
-        // JavaScript логика
+        // JavaScript логика (остается без изменений)
         document.addEventListener('DOMContentLoaded', () => {
             const messages = {
                 en: "The auction exchange is currently under development and is not yet available.",
@@ -137,7 +161,7 @@
 
             const animatedText = document.getElementById('animated-text');
             const langButtons = document.querySelectorAll('#lang-switcher button');
-            let currentLang = 'ru'; // Начальный язык
+            let currentLang = 'ru';
 
             function updateText(lang) {
                 animatedText.classList.add('fade-out');
@@ -145,9 +169,9 @@
                     animatedText.textContent = messages[lang];
                     animatedText.classList.remove('fade-out');
                     animatedText.style.animation = 'none';
-                    void animatedText.offsetWidth; // Трюк для перезапуска CSS анимации
+                    void animatedText.offsetWidth;
                     animatedText.style.animation = null;
-                }, 500); // Задержка равна длительности анимации fadeOut
+                }, 500);
             }
             
             function setActiveButton(lang) {
@@ -167,11 +191,10 @@
                 });
             });
 
-            // Установка начального состояния при загрузке страницы
             updateText(currentLang);
             setActiveButton(currentLang);
         });
     </script>
 
 </body>
-</html>
+</html>```
