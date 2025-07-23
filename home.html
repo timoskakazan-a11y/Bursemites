@@ -3,51 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Главная страница</title>
-
-    <script>
-        // --- НАЧАЛО: Скрипт защиты страницы ---
-        (function() {
-            const authorizedIp = '5.59.98.46';
-            const fallbackPage = 'index.html'; // Укажите имя вашей страницы-заглушки
-
-            // Используем fetch для получения IP-адреса. [8]
-            // Сервис ipify возвращает IP в формате JSON. [9]
-            fetch('https://api.ipify.org?format=json')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // ЕСЛИ IP-адрес НЕ совпадает с разрешенным
-                    if (data.ip !== authorizedIp) {
-                        // Немедленно перенаправляем на страницу-заглушку. [2]
-                        // window.location.replace не сохраняет эту страницу в истории браузера. [6]
-                        window.location.replace(fallbackPage);
-                    }
-                    // Если IP совпадает, ничего не делаем, и пользователь увидит содержимое страницы.
-                })
-                .catch(error => {
-                    console.error('Ошибка при проверке IP-адреса:', error);
-                    // В случае ошибки (например, сервис ipify недоступен), 
-                    // для безопасности также перенаправляем на заглушку.
-                    window.location.replace(fallbackPage);
-                });
-        })();
-        // --- КОНЕЦ: Скрипт защиты страницы ---
-    </script>
-
+    <title>Bursemites - Главная</title>
+    
+    <!-- Подключаем те же шрифты для консистентности дизайна -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        /* === Копируем все стили с главной страницы для единого вида === */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #003399;
+            font-family: 'Poppins', sans-serif; 
+            overflow: hidden;
+        }
+
+        .construction-container {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Скрываем основной контент по умолчанию */
+        #main-content {
+            display: none;
+        }
+
+        .logo-container {
+            margin-bottom: 40px;
+        }
+        
+        .logo-img {
+            max-width: 250px;
+            height: auto;
+        }
+        
+        .message-box {
+            min-height: 110px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-box h1 {
+            font-family: 'Manrope', sans-serif;
+            font-size: clamp(1.6rem, 5vw, 2.6rem);
+            font-weight: 600;
+        }
+        
+        .message-box p {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-top: 15px;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        /* Стили для мобильных устройств */
+        @media (max-width: 600px) {
+            .logo-container { margin-bottom: 30px; }
+            .logo-img { max-width: 200px; }
+            .message-box { min-height: 90px; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Добро пожаловать!</h1>
-    <p>Это защищенная страница `home.html`.</p>
-    <p>Вы видите ее, потому что ваш IP-адрес авторизован.</p>
+    <!-- ЭКРАН 1: ЗАЩИТНЫЙ ЭКРАН (виден по умолчанию) -->
+    <div id="protection-screen" class="construction-container">
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/MZQsbd1h/Group.png" alt="Логотип Bursemites" class="logo-img">
+        </div>
+        <div class="message-box">
+            <h1>Проверка доступа...</h1>
+        </div>
+    </div>
+
+    <!-- ЭКРАН 2: ОСНОВНОЙ КОНТЕНТ (скрыт по умолчанию) -->
+    <div id="main-content" class="construction-container">
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/MZQsbd1h/Group.png" alt="Логотип Bursemites" class="logo-img">
+        </div>
+        <div class="message-box">
+            <div> <!-- Дополнительная обертка для группировки текста -->
+                <h1>Добро пожаловать!</h1>
+                <p>Вы находитесь на главной странице. Доступ разрешен, так как ваш IP-адрес находится в списке авторизованных.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- НАЧАЛО: Скрипт защиты и переключения видимости ---
+        (function() {
+            const authorizedIp = '5.59.98.46';
+            const fallbackPage = 'index.html'; // Убедитесь, что имя файла верное
+
+            // Получаем ссылки на наши экраны
+            const protectionScreen = document.getElementById('protection-screen');
+            const mainContent = document.getElementById('main-content');
+
+            // Используем fetch для получения IP-адреса. [8]
+            fetch('https://api.ipify.org?format=json')
+                .then(response => {
+                    if (!response.ok) { throw new Error('Network response was not ok'); }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.ip === authorizedIp) {
+                        // IP ВЕРНЫЙ: скрываем защиту и показываем контент
+                        protectionScreen.style.display = 'none';
+                        mainContent.style.display = 'flex'; // Используем flex для сохранения центрирования
+                    } else {
+                        // IP НЕВЕРНЫЙ: перенаправляем на страницу-заглушку
+                        window.location.replace(fallbackPage);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при проверке IP-адреса:', error);
+                    // В СЛУЧАЕ ОШИБКИ: для безопасности тоже перенаправляем
+                    window.location.replace(fallbackPage);
+                });
+        })();
+        // --- КОНЕЦ: Скрипт защиты ---
+    </script>
 
 </body>
 </html>
