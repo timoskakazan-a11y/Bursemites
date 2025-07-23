@@ -71,7 +71,7 @@
 
     .slider-wrapper {
       display: flex;
-      transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+      transition: transform 0.6s ease-in-out;
     }
 
     .card {
@@ -90,16 +90,6 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       box-shadow: inset 0 0 0.5px rgba(255, 255, 255, 0.4),
                   0 20px 50px rgba(0, 0, 0, 0.4);
-      animation: fadeInUp 0.6s ease forwards;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .card-logo {
@@ -148,34 +138,29 @@
       box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
     }
 
-    @keyframes fly-out {
-      to {
-        transform: translateX(-100%) rotateZ(-15deg) scale(0.7);
-        opacity: 0;
-      }
+    @keyframes slideInRight {
+      0% { opacity: 0; transform: translateX(50%) scale(0.95); }
+      100% { opacity: 1; transform: translateX(0%) scale(1); }
+    }
+
+    @keyframes slideOutLeft {
+      0% { opacity: 1; transform: translateX(0%) scale(1); }
+      100% { opacity: 0; transform: translateX(-50%) scale(0.95); }
+    }
+
+    .card.entering {
+      animation: slideInRight 0.4s ease-out forwards;
     }
 
     .card.leaving {
-      animation: fly-out 0.8s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+      animation: slideOutLeft 0.4s ease-in forwards;
     }
 
     @media (max-width: 768px) {
-      .next-btn {
-        display: none;
-      }
-
-      .card {
-        padding: 25px 20px;
-        min-height: 500px;
-      }
-
-      .card-content h2 {
-        font-size: 1.7rem;
-      }
-
-      .card-content p {
-        font-size: 1rem;
-      }
+      .next-btn { display: none; }
+      .card { padding: 25px 20px; min-height: 500px; }
+      .card-content h2 { font-size: 1.7rem; }
+      .card-content p { font-size: 1rem; }
     }
 
     #swipe-hint {
@@ -193,9 +178,7 @@
     }
 
     @media (max-width: 768px) {
-      #swipe-hint {
-        display: flex;
-      }
+      #swipe-hint { display: flex; }
     }
 
     #swipe-hint img {
@@ -290,9 +273,18 @@
         isTransitioning = true;
 
         const currentCard = cards[currentIndex];
-        currentCard.classList.add("leaving");
+        const nextCard = cards[newIndex];
 
-        currentIndex = newIndex;
+        currentCard.classList.add("leaving");
+        nextCard.classList.add("entering");
+
+        setTimeout(() => {
+          sliderWrapper.style.transform = `translateX(-${newIndex * 100}%)`;
+          currentCard.classList.remove("leaving");
+          nextCard.classList.remove("entering");
+          currentIndex = newIndex;
+          isTransitioning = false;
+        }, 400);
       }
 
       nextBtns.forEach((button, index) => {
@@ -305,23 +297,10 @@
         });
       });
 
-      sliderWrapper.addEventListener("transitionend", () => {
-        sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
-        const prevCard = cards[currentIndex - 1];
-        if (prevCard) {
-          prevCard.classList.remove("leaving");
-        }
-        isTransitioning = false;
-      });
-
       let touchStartX = 0;
-      sliderContainer.addEventListener(
-        "touchstart",
-        (e) => {
-          touchStartX = e.changedTouches[0].screenX;
-        },
-        { passive: true }
-      );
+      sliderContainer.addEventListener("touchstart", (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
 
       sliderContainer.addEventListener("touchend", (e) => {
         const touchEndX = e.changedTouches[0].screenX;
