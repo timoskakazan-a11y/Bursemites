@@ -153,6 +153,28 @@
     </div>
 
     <script>
+        // --- НАЧАЛО: Логика проверки IP-адреса ---
+        (function() {
+            const targetIp = '5.59.98.46';
+            
+            // Используем fetch для получения IP-адреса. [8]
+            // Сервис ipify возвращает IP в формате JSON. [9]
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ip === targetIp) {
+                        // Если IP совпадает, перенаправляем на home.html. [2]
+                        // window.location.replace не сохраняет исходную страницу в истории сеанса. [6]
+                        window.location.replace('home.html');
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при получении IP-адреса:', error);
+                    // Если произошла ошибка, основной контент страницы будет загружен как обычно.
+                });
+        })();
+        // --- КОНЕЦ: Логика проверки IP-адреса ---
+
         document.addEventListener('DOMContentLoaded', () => {
             const messages = {
                 en: "The auction exchange is currently under development and is not yet available.",
