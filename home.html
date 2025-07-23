@@ -3,57 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bursemites - Панель управления</title>
-    
-    <!-- Подключаем те же шрифты для единообразия стиля -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap" rel="stylesheet">
-    
+    <title>Главная страница</title>
+
+    <script>
+        // --- НАЧАЛО: Скрипт защиты страницы ---
+        (function() {
+            const authorizedIp = '5.59.98.46';
+            const fallbackPage = 'index.html'; // Укажите имя вашей страницы-заглушки
+
+            // Используем fetch для получения IP-адреса. [8]
+            // Сервис ipify возвращает IP в формате JSON. [9]
+            fetch('https://api.ipify.org?format=json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // ЕСЛИ IP-адрес НЕ совпадает с разрешенным
+                    if (data.ip !== authorizedIp) {
+                        // Немедленно перенаправляем на страницу-заглушку. [2]
+                        // window.location.replace не сохраняет эту страницу в истории браузера. [6]
+                        window.location.replace(fallbackPage);
+                    }
+                    // Если IP совпадает, ничего не делаем, и пользователь увидит содержимое страницы.
+                })
+                .catch(error => {
+                    console.error('Ошибка при проверке IP-адреса:', error);
+                    // В случае ошибки (например, сервис ipify недоступен), 
+                    // для безопасности также перенаправляем на заглушку.
+                    window.location.replace(fallbackPage);
+                });
+        })();
+        // --- КОНЕЦ: Скрипт защиты страницы ---
+    </script>
+
     <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #003399;
-            font-family: 'Manrope', sans-serif;
-            color: white;
-        }
-        .home-container {
-            text-align: center;
-            padding: 30px;
-        }
-        .logo-img {
-            max-width: 200px;
-            margin-bottom: 30px;
-        }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 0 0 15px 0;
-        }
-        p {
-            font-size: 1.2rem;
-            font-weight: 600;
-            opacity: 0.8;
-        }
-         @media (max-width: 600px) {
-            h1 { font-size: 2rem; }
-            p { font-size: 1rem; }
-         }
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
     </style>
 </head>
 <body>
 
-    <div class="home-container">
-        <img src="https://i.postimg.cc/MZQsbd1h/Group.png" alt="Логотип Bursemites" class="logo-img">
-        <h1>Добро пожаловать!</h1>
-        <p>Эта страница доступна в режиме разработки.</p>
-    </div>
+    <h1>Добро пожаловать!</h1>
+    <p>Это защищенная страница `home.html`.</p>
+    <p>Вы видите ее, потому что ваш IP-адрес авторизован.</p>
 
 </body>
 </html>
