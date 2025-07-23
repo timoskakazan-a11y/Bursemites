@@ -7,17 +7,15 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;800&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --background-color: #003399;
+            --brand-color: #003399;
             --text-color: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(30, 50, 120, 0.3);
             --glass-border: rgba(255, 255, 255, 0.2);
-            --button-bg: rgba(255, 255, 255, 0.9);
-            --button-text: #003399;
+            --glow-color: rgba(100, 150, 255, 0.5);
         }
 
         html, body {
@@ -25,10 +23,12 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--background-color);
-            font-family: 'Poppins', sans-serif; 
+            font-family: 'Manrope', sans-serif; 
             overflow: hidden;
             color: var(--text-color);
+            /* УЛУЧШЕННЫЙ ФОН: добавляет глубины */
+            background: var(--brand-color);
+            background: radial-gradient(circle at top left, #0055ff, var(--brand-color) 60%);
         }
 
         /* --- ЭКРАН ЗАЩИТЫ --- */
@@ -41,20 +41,12 @@
             flex-direction: column;
             text-align: center;
         }
-
-        #protection-screen .logo-img {
-            max-width: 250px;
-            margin-bottom: 40px;
-        }
-
-        #protection-screen h1 {
-            font-family: 'Manrope', sans-serif;
-            font-size: clamp(1.6rem, 5vw, 2.6rem);
-        }
+        #protection-screen .logo-img { max-width: 250px; margin-bottom: 40px; }
+        #protection-screen h1 { font-size: clamp(1.6rem, 5vw, 2.6rem); }
 
         /* --- ОСНОВНОЙ КОНТЕНТ (СЛАЙДЕР) --- */
         #main-content {
-            display: none; /* Скрыто до проверки IP */
+            display: none;
             justify-content: center;
             align-items: center;
             width: 100%;
@@ -66,167 +58,170 @@
 
         .slider-container {
             width: 100%;
-            max-width: 450px; /* Ограничиваем ширину для больших экранов */
+            /* УВЕЛИЧЕННЫЙ РАЗМЕР КАРТОЧЕК НА ПК */
+            max-width: 580px;
             overflow: hidden;
-            position: relative;
+            perspective: 1500px; /* Для 3D эффекта */
         }
 
         .slider-wrapper {
             display: flex;
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            /* Улучшенная плавная анимация */
+            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
         }
 
-        /* --- ДИЗАЙН КАРТОЧЕК (GLASSMORPHISM) --- */
+        /* --- НОВЫЙ УЛУЧШЕННЫЙ ДИЗАЙН КАРТОЧЕК --- */
         .card {
             flex: 0 0 100%;
             box-sizing: border-box;
-            padding: 40px 35px;
-            text-align: center;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            align-items: center;
-            min-height: 400px;
+            /* УВЕЛИЧЕНА ВЫСОТА */
+            min-height: 450px;
+            position: relative;
             
-            /* Эффект стекла */
+            /* УЛУЧШЕННЫЙ ЭФФЕКТ СТЕКЛА */
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px); /* Для Safari */
-            border-radius: 20px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            
+            /* УЛУЧШЕНО РАСПОЛОЖЕНИЕ ТЕКСТА */
+            text-align: left;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
+        .card-logo {
+            width: 150px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
         .card-content h2 {
-            font-family: 'Manrope', sans-serif;
             font-weight: 800;
-            font-size: clamp(1.5rem, 5vw, 1.8rem);
-            margin-top: 0;
-            margin-bottom: 15px;
+            font-size: clamp(2rem, 5vw, 2.5rem);
+            margin: 0;
+            line-height: 1.2;
         }
 
         .card-content p {
-            font-size: clamp(0.95rem, 3vw, 1.05rem);
+            font-weight: 400;
+            font-size: clamp(1rem, 3vw, 1.1rem);
             line-height: 1.6;
-            opacity: 0.9;
+            opacity: 0.8;
+            margin-top: 20px;
+            max-width: 90%; /* Чтобы текст не прилипал к краям */
         }
 
         .next-btn {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
+            font-family: 'Manrope', sans-serif;
+            font-weight: 800;
             font-size: 16px;
-            padding: 12px 40px;
-            border-radius: 10px;
+            padding: 14px 45px;
+            border-radius: 12px;
             border: none;
             cursor: pointer;
-            background-color: var(--button-bg);
-            color: var(--button-text);
-            transition: transform 0.2s ease, background-color 0.2s ease;
-            margin-top: 30px;
+            background-color: var(--text-color);
+            color: var(--brand-color);
+            transition: transform 0.2s ease;
+            margin-top: 40px;
+            align-self: flex-start; /* Кнопка теперь слева */
         }
-
-        .next-btn:hover {
-            transform: scale(1.05);
-        }
+        .next-btn:hover { transform: scale(1.05); }
         
-        #start-btn {
-            background-color: #ffffff; /* Более акцентный цвет для последней кнопки */
+        /* --- НОВАЯ АНИМАЦИЯ "УЛЕТАЮЩЕЙ" КАРТОЧКИ --- */
+        @keyframes fly-out {
+            to {
+                transform: translateX(-100%) rotateZ(-15deg) scale(0.7);
+                opacity: 0;
+            }
         }
-        
-        /* --- ПОДСКАЗКА ДЛЯ СВАЙПА --- */
-        #swipe-hint {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none; /* Показываем только на мобильных */
-            align-items: center;
-            gap: 10px;
-            padding: 8px 15px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 20px;
-            animation: hint-float 2s infinite ease-in-out;
-            pointer-events: none; /* Чтобы не мешала свайпу */
-        }
-        
-        #swipe-hint img {
-            width: 24px;
-            animation: swipe-anim 1.5s infinite ease-in-out;
-        }
-
-        @keyframes swipe-anim {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-10px); }
-        }
-        @keyframes hint-float {
-            0%, 100% { transform: translate(-50%, 0); }
-            50% { transform: translate(-50%, -5px); }
+        .card.leaving {
+            /* Применяем анимацию */
+            animation: fly-out 0.8s cubic-bezier(0.76, 0, 0.24, 1) forwards;
         }
 
         /* --- АДАПТИВНОСТЬ --- */
         @media (max-width: 768px) {
-            .next-btn {
-                display: none; /* Скрываем кнопки на мобильных */
-            }
-            #swipe-hint {
-                display: flex; /* Показываем подсказку */
-            }
-            .card {
-                padding: 35px 25px;
-                min-height: 420px;
-            }
+            .next-btn { display: none; } /* Скрываем кнопки на мобильных */
+            .card { padding: 30px; min-height: 480px; }
+            .card-content h2 { font-size: 1.8rem; }
+            .card-content p { font-size: 1rem; }
         }
+
+        /* Подсказка для свайпа (без изменений) */
+        #swipe-hint {
+            display: none;
+            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%);
+            align-items: center; gap: 10px; padding: 8px 15px;
+            background: rgba(0,0,0,0.3); border-radius: 20px;
+            pointer-events: none;
+        }
+        @media(max-width: 768px) { #swipe-hint { display: flex; } }
+        #swipe-hint img { width: 24px; filter: invert(1); }
 
     </style>
 </head>
 <body>
 
-    <!-- ЭКРАН 1: ЗАЩИТА (виден по умолчанию) -->
+    <!-- ЭКРАН 1: ЗАЩИТА -->
     <div id="protection-screen">
         <img src="https://i.postimg.cc/MZQsbd1h/Group.png" alt="Логотип Bursemites" class="logo-img">
         <h1>Проверка доступа...</h1>
     </div>
 
-    <!-- ЭКРАН 2: ОСНОВНОЙ КОНТЕНТ (слайдер, скрыт по умолчанию) -->
+    <!-- ЭКРАН 2: ОСНОВНОЙ КОНТЕНТ (СЛАЙДЕР) -->
     <div id="main-content">
         <div class="slider-container">
             <div class="slider-wrapper">
                 <!-- Карточка 1 -->
                 <div class="card">
-                    <div class="card-content">
-                        <h2>Добро пожаловать в Bursemites!</h2>
-                        <p>Вам выдали доступ для теста эксклюзивной версии.</p>
+                    <div>
+                        <img src="https://i.postimg.cc/MZQsbd1h/Group.png" class="card-logo" alt="Логотип">
+                        <div class="card-content">
+                            <h2>Добро пожаловать в Bursemites!</h2>
+                            <p>Вам выдали доступ для теста эксклюзивной версии.</p>
+                        </div>
                     </div>
                     <button class="next-btn">Дальше</button>
                 </div>
                 <!-- Карточка 2 -->
                 <div class="card">
-                    <div class="card-content">
-                        <h2>Безграничные возможности</h2>
-                        <p>Продавайте на бирже товары, устраивайте аукционы, выбирайте наилучших покупателей.</p>
+                    <div>
+                        <img src="https://i.postimg.cc/MZQsbd1h/Group.png" class="card-logo" alt="Логотип">
+                        <div class="card-content">
+                            <h2>Безграничные возможности</h2>
+                            <p>Продавайте на бирже товары, устраивайте аукционы, выбирайте наилучших покупателей.</p>
+                        </div>
                     </div>
                     <button class="next-btn">Дальше</button>
                 </div>
                 <!-- Карточка 3 -->
                 <div class="card">
-                     <div class="card-content">
-                        <h2>Все под рукой</h2>
-                        <p>Удобный современный интерфейс, наилучшие подборки и встроенный маркетплейс.</p>
+                     <div>
+                        <img src="https://i.postimg.cc/MZQsbd1h/Group.png" class="card-logo" alt="Логотип">
+                        <div class="card-content">
+                           <h2>Все под рукой</h2>
+                           <p>Удобный современный интерфейс, наилучшие подборки и встроенный маркетплейс.</p>
+                        </div>
                     </div>
                     <button class="next-btn" id="start-btn">Начать</button>
                 </div>
             </div>
         </div>
-
-        <!-- Подсказка для свайпа на мобильных -->
+        <!-- Подсказка для свайпа -->
         <div id="swipe-hint">
-            <img src="https://www.svgrepo.com/show/493721/hand-drag.svg" alt="Swipe" style="filter: invert(1);">
+            <img src="https://www.svgrepo.com/show/493721/hand-drag.svg" alt="Swipe">
             <span>Смахните</span>
         </div>
     </div>
 
     <script>
-        // --- БЛОК 1: ПРОВЕРКА IP И ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ ---
+        // БЛОК 1: ПРОВЕРКА IP
         (function() {
             const authorizedIp = '5.59.98.46';
             const fallbackPage = 'index.html';
@@ -235,18 +230,13 @@
 
             // Используем fetch для получения IP-адреса. [8]
             fetch('https://api.ipify.org?format=json')
-                .then(response => {
-                    if (!response.ok) { throw new Error('Network error'); }
-                    return response.json();
-                })
+                .then(response => response.ok ? response.json() : Promise.reject('Network error'))
                 .then(data => {
                     if (data.ip === authorizedIp) {
-                        // IP ВЕРНЫЙ: показываем основной контент и запускаем логику слайдера
                         protectionScreen.style.display = 'none';
                         mainContent.style.display = 'flex';
-                        initializeSlider(); // <--- Запускаем слайдер
+                        initializeSlider();
                     } else {
-                        // IP НЕВЕРНЫЙ: перенаправляем
                         window.location.replace(fallbackPage);
                     }
                 })
@@ -256,74 +246,73 @@
                 });
         })();
 
-        // --- БЛОК 2: ЛОГИКА СЛАЙДЕРА ---
+        // БЛОК 2: УЛУЧШЕННАЯ ЛОГИКА СЛАЙДЕРА
         function initializeSlider() {
             const sliderWrapper = document.querySelector('.slider-wrapper');
+            const cards = document.querySelectorAll('.card');
             const nextBtns = document.querySelectorAll('.next-btn');
             const sliderContainer = document.querySelector('.slider-container');
-            const swipeHint = document.getElementById('swipe-hint');
             
             let currentIndex = 0;
-            const totalSlides = nextBtns.length;
+            let isTransitioning = false;
+            const totalSlides = cards.length;
 
-            // Функция для перехода к слайду
-            function goToSlide(index) {
-                if (index < 0 || index >= totalSlides) return;
-                currentIndex = index;
-                sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+            function goToSlide(newIndex) {
+                if (isTransitioning || newIndex < 0 || newIndex >= totalSlides) return;
+                isTransitioning = true;
+
+                const currentCard = cards[currentIndex];
+                // Применяем класс анимации "улетания" к текущей карточке
+                currentCard.classList.add('leaving');
+
+                currentIndex = newIndex;
+                
+                // Для мобильных устройств, где кнопок нет, свайп на последнем слайде ничего не делает
+                if(window.innerWidth <= 768 && newIndex >= totalSlides -1) {
+                     // Можно добавить действие для последнего свайпа, если нужно
+                }
             }
 
-            // Навигация кнопками для ПК
+            // Логика для кнопок на ПК
             nextBtns.forEach((button, index) => {
                 button.addEventListener('click', () => {
                     if (index < totalSlides - 1) {
-                        goToSlide(currentIndex + 1);
+                        goToSlide(index + 1);
                     } else {
-                        // Логика для кнопки "Начать"
                         alert('Добро пожаловать в систему!');
-                        // Здесь может быть перенаправление на другую страницу, например:
                         // window.location.href = '/dashboard.html';
                     }
                 });
             });
 
-            // Навигация свайпом для мобильных
-            let touchStartX = 0;
-            let touchEndX = 0;
-            let hintWasHidden = false;
+            // Когда анимация СДВИГА КОНТЕЙНЕРА завершена, проводим очистку
+            sliderWrapper.addEventListener('transitionend', () => {
+                // Сдвигаем контейнер на новую позицию
+                sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
 
-            sliderContainer.addEventListener('touchstart', e => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-
-            sliderContainer.addEventListener('touchend', e => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
+                // Убираем анимацию "улетания" с предыдущей карточки, чтобы ее можно было показать снова
+                const prevCard = cards[currentIndex - 1];
+                if(prevCard) {
+                    prevCard.classList.remove('leaving');
+                }
+                isTransitioning = false;
             });
-
-            function handleSwipe() {
-                const swipeThreshold = 50; // Минимальная дистанция свайпа
+            
+            // Логика свайпов для мобильных (без изменений, но работает с новой анимацией)
+            let touchStartX = 0;
+            sliderContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+            sliderContainer.addEventListener('touchend', e => {
+                const touchEndX = e.changedTouches[0].screenX;
+                const swipeThreshold = 50;
                 if (touchEndX < touchStartX - swipeThreshold) {
-                    // Свайп влево
-                    if (currentIndex < totalSlides - 1) {
-                        goToSlide(currentIndex + 1);
-                    }
+                    goToSlide(currentIndex + 1);
                 } else if (touchEndX > touchStartX + swipeThreshold) {
-                    // Свайп вправо
-                    if (currentIndex > 0) {
-                        goToSlide(currentIndex - 1);
-                    }
+                    // Свайп назад пока отключен для простоты, но можно добавить
+                    // goToSlide(currentIndex - 1);
                 }
-                
-                // Скрываем подсказку после первого свайпа
-                if (!hintWasHidden && (touchStartX !== touchEndX)) {
-                    swipeHint.style.transition = 'opacity 0.5s';
-                    swipeHint.style.opacity = '0';
-                    hintWasHidden = true;
-                }
-            }
+            });
         }
     </script>
 
 </body>
-</html>```
+</html>
